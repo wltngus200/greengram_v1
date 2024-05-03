@@ -6,6 +6,11 @@ spring:
     url: jdbc:mariadb://localhost:3306/greengram2024_v1
     username: root
     password: green502
+  servlet:
+    multipart:
+      max-file-size: 5MB
+file:
+  directory: D:\2024_BACK_JI\download\greengram_ver1\
 
 mybatis:
   mapper-locations: mappers/**/*.xml

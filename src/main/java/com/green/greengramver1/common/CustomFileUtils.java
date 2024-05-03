@@ -3,6 +3,7 @@ package com.green.greengramver1.common;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.UUID;
@@ -34,16 +35,17 @@ public class CustomFileUtils {
         //폴더 만들기 오른쪽 폴더 제너레이트 테스트->커스텀파일 유틸테스트 클래스가 생김
     }
 //파일 이름이 여러가지 언어가 섞여 있어 에러를 유발 할 수 있기 때문에 영어와 숫자로 변경
-    //UUID랜덤 파일 명
-    public String makeRandomFileName(){
-        return UUID.randomUUID().toString();
-    }
+    //UUID랜덤 파일 명(JAVA 내장)
 
     //파일 명에서 확장자 얻어오기
     public String getExt(String fileName){//d2.dt3ra.jpg
         int idx=fileName.indexOf(".");//내가 찾는 문자열이 있다면 양수값 없으면 음수값
         //indexOf는 왼쪽에서부터 찾음 <-> lastIndexOf 오른쪽부터 찾음
         return fileName.substring(idx);
+    }
+    //오버로딩
+    public String makeRandomFileName(){
+        return UUID.randomUUID().toString();
     }
 
     //랜덤 파일 명 with 확장자 만들기
@@ -52,5 +54,16 @@ public class CustomFileUtils {
         String ext=fileName.substring(idx);
         String resultFileName=UUID.randomUUID().toString()+ext;
         return resultFileName;
+    }
+
+    public String makeRandomFileName(MultipartFile mf){
+        return mf==null || mf.isEmpty() ? null : makeRandomFileName(mf.getOriginalFilename());
+    }//mf.isEmpty() 형식은 넣었는데 비었다(포스트맨에 체크는 되어있는데 비어있다) / null은 형식도 없다(PostMan체크 없음)
+
+    //파일저장(target 경로/파일명)
+    public void transferTo(MultipartFile mf, String target) throws Exception {
+        File saveFile=new File(uploadPath, target); //최종경로
+        mf.transferTo(saveFile);//에러를 감싸주어야함
+        //mf에게 어디에 저장할 지 알려줘야됨
     }
 }

@@ -1,0 +1,24 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.green.greengramver1.feed.FeedMapper">
+
+    <!--PK값 가져오기-->
+    <insert id="postFeed" useGeneratedKeys="true" keyProperty="feedId">
+        INSERT INTO feed<!--글을 가져오는 것-->
+        SET writer_id=#{userId}
+        , contents=#{contents}
+        , location=#{location}
+    </insert>
+
+    <insert id="postFeedPics">
+        INSERT INTO feed_pics
+        (feed_id, pic)
+        VALUES
+        <!--반복문-->
+        <!--아이템엔 아무거나 콜렉션은 feedPostDto의 콜렉션-->
+        <foreach item="item" collection="filenames" separator=",">
+            (#{feedId, #{item})
+        </foreach>
+    </insert>
+</mapper>
