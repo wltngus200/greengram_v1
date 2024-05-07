@@ -18,14 +18,17 @@ public class CustomFileUtils {
     //객체화가 되고 나서야 값을 넣을 수 있기 때문에 final은 붙일 수 없다
     */
 
-    private final String uploadPath;
+    private final String uploadPath; //value에노테이션을 통해 값이 들어감
     public CustomFileUtils(@Value("${file.directory}")String uploadPath){
         //yaml과 분류 명, 파일 이름이 일치
         //빈등록을 해야되는데 클래스를 객체화 하려고 하면 파라미터로 뭘 넣을 지 모름
         //그걸 알려주는 게 Value
-        this.uploadPath=uploadPath;
+        /*value : yaml파일(세팅) 사용할 라이브러리 값+내가 사용할 값(커스텀할 속성) 여기 저장된 값 DI가 되어 파라미터로 들어옴
+         */
+        this.uploadPath=uploadPath;//직접 안 적고 이렇게 하는 이유
+        //자바파일은 클래스 파일로 바뀌어야 함 고급언어(사람언어)--컴파일-->저급언어(컴퓨터언어) value로 참조하면 컴파일 필요성 감소
     }
-    public String makeFolders(String path){
+    public String makeFolders(String path){//path경로
         File folder= new File(uploadPath, path);//디렉토리도 파일도 파일 /는 알아서 넣어줌
         //이 경로를 가진 파일 ?
         folder.mkdirs();
@@ -50,10 +53,7 @@ public class CustomFileUtils {
 
     //랜덤 파일 명 with 확장자 만들기
     public String makeRandomFileName(String fileName){//파라미터로 원본의 파일명 날아옴
-        int idx=fileName.lastIndexOf(".");
-        String ext=fileName.substring(idx);
-        String resultFileName=UUID.randomUUID().toString()+ext;
-        return resultFileName;
+        return makeRandomFileName()+getExt(fileName);
     }
 
     public String makeRandomFileName(MultipartFile mf){
@@ -62,8 +62,10 @@ public class CustomFileUtils {
 
     //파일저장(target 경로/파일명)
     public void transferTo(MultipartFile mf, String target) throws Exception {
-        File saveFile=new File(uploadPath, target); //최종경로
-        mf.transferTo(saveFile);//에러를 감싸주어야함
+        //클라이언트가 서버에 파일을 보내면
+        File saveFile=new File(uploadPath, target); //최종경로 //바꿔주는 작업
+        mf.transferTo(saveFile);//에러를 감싸주어야함 //transfer되어라
+        //파일 객체는 전체 경로, 확장자
         //mf에게 어디에 저장할 지 알려줘야됨
     }
 }

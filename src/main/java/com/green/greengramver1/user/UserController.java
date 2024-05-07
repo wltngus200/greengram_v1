@@ -3,7 +3,7 @@ package com.green.greengramver1.user;
 import com.green.greengramver1.common.model.ResultDto;
 import com.green.greengramver1.common.model.SignInRes;
 import com.green.greengramver1.user.model.SignInPostReq;
-import com.green.greengramver1.user.model.SingUpPostReq;
+import com.green.greengramver1.user.model.SignUpPostReq;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("api/user")
 
 @Tag(name="유저 컨트롤러", description="유저 CRUD, sign-in, sign-out")
 public class UserController {
@@ -24,7 +24,7 @@ public class UserController {
     @PostMapping("sign-up")
     @Operation(summary = "회원가입", description = "프로필 사진은 필수가 아님")
     public ResultDto<Integer> postUser(@RequestPart(required = false) MultipartFile pic, //service에 로직이 없으면 메모리에 파일이 있다
-                                       @RequestPart SingUpPostReq p){
+                                       @RequestPart SignUpPostReq p){
         //@RequestPart(required = false) 사진을 무조건 보내지 않아도 된다
         //파일을 보낸다
         log.info("pic: {}", pic);
@@ -40,7 +40,7 @@ public class UserController {
                 .build();
     }
     //사진 이름 PK값
-    @PostMapping
+    @PostMapping("sign-in")
     @Operation(summary = "인증처리", description = "")
     public ResultDto<SignInRes> postSignIn(@RequestBody SignInPostReq p){
         log.info("p: {}", p);

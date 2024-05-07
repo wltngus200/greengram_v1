@@ -16,10 +16,11 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     public WebMvcConfiguration(@Value("${file.directory}")String uploadPath){
         this.uploadPath=uploadPath;
     }
+    //Value
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry){
         registry.addResourceHandler("/pic/**")
-                //주소값이 이렇게 들어오면 아래쪽 uploadPath로 매핑
+                //주소값이 이렇게 들어오면(~~라고 요청이 들어온다면) 아래쪽 uploadPath로 매핑
                 //pic/user/4/(파일이름)
                 .addResourceLocations("file:"+uploadPath);
     }

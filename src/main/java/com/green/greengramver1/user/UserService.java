@@ -3,7 +3,7 @@ package com.green.greengramver1.user;
 import com.green.greengramver1.common.CustomFileUtils;
 import com.green.greengramver1.common.model.SignInRes;
 import com.green.greengramver1.user.model.SignInPostReq;
-import com.green.greengramver1.user.model.SingUpPostReq;
+import com.green.greengramver1.user.model.SignUpPostReq;
 import com.green.greengramver1.user.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class UserService {
     private final CustomFileUtils customFileUtils;//DI
 
     @Transactional//문제가 없다고 판단되면 insert
-    public int postSignUp(MultipartFile pic, SingUpPostReq p){
+    public int postSignUp(MultipartFile pic, SignUpPostReq p){
         String saveFileName= customFileUtils.makeRandomFileName(pic);
         p.setPic(saveFileName);
         String hashedPw= BCrypt.hashpw(p.getUpw(),BCrypt.gensalt());

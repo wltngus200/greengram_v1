@@ -5,7 +5,10 @@
 
     <!--PK값 가져오기-->
     <insert id="postFeed" useGeneratedKeys="true" keyProperty="feedId">
-        INSERT INTO feed<!--글을 가져오는 것-->
+        <!--mysql mariadb에서만 가능한 기능(not oracle)-->
+        <!--pk Auto_increment 레코드를 넣음과 동시에 PK값 필요(업로드와 동시에 글의 상세 보기)-->
+        <!--인서트 했을 때 객체 보냈음 그 객체의 주소값 feedpostreq에서 feedId는 받을 값 나머지는 줄 값-->
+        INSERT INTO feed
         SET writer_id=#{userId}
         , contents=#{contents}
         , location=#{location}
@@ -17,8 +20,31 @@
         VALUES
         <!--반복문-->
         <!--아이템엔 아무거나 콜렉션은 feedPostDto의 콜렉션-->
-        <foreach item="item" collection="filenames" separator=",">
-            (#{feedId, #{item})
+        <foreach item="item" collection="fileNames" separator=",">
+            <!--filenames를 item에 넣는다 separator(다음 게 있다면) ,를 찍고-->
+            <!--아래 괄호를 없애고 separator를 "), ("로 줄 수도 있음-->
+            <!--open, close는 딱 1번 찍음 -->
+            (#{feedId}, #{item})
+            <!--(10, a.jpg),
+                (10, b.jpg),
+                (10, c.jpg)-->
         </foreach>
     </insert>
+
+    <select id="getFeed">
+        SELECT A.feed_id AS feedId, A.writer_id AS writerId, B.nm AS writerNm, B.pic AS writerPic,
+                A.contents, A.location, A.created_at AS createdAt
+        FROM feed A
+        INNER JOIN user B
+        ON A.writer_id=B.user_id
+        ORDER BY A.created_at DESC
+        LIMIT #{startIdx},#{len};
+    </select>
+
+    <select id="getFeedPicsByFeedId">
+        SELECT pic
+        FROM feed_pics
+        WHERE feed_id = #{feedId}
+    </select>
+
 </mapper>

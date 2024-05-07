@@ -9,7 +9,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SingUpPostReq {
+public class SignUpPostReq {
     @JsonIgnore
     private long userId;
 
