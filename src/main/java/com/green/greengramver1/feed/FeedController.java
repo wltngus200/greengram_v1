@@ -44,6 +44,6 @@ public class FeedController {
                 .resultMsg(HttpStatus.OK.toString())
                 .resultData(result)
                 .build();
-    }
+    }//n+1이슈 존재
 
 }

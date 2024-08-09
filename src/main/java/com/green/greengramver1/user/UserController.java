@@ -26,7 +26,7 @@ public class UserController {
     public ResultDto<Integer> postUser(@RequestPart(required = false) MultipartFile pic, //service에 로직이 없으면 메모리에 파일이 있다
                                        @RequestPart SignUpPostReq p){
         //@RequestPart(required = false) 사진을 무조건 보내지 않아도 된다
-        //파일을 보낸다
+        //파일을 보낸다 = @RequestPart
         log.info("pic: {}", pic);
         log.info("p: {}", p);
         //랜덤한 파일 명을 DB에 저장

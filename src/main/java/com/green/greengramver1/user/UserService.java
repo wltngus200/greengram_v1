@@ -22,11 +22,11 @@ public class UserService {
     @Transactional//문제가 없다고 판단되면 insert
     public int postSignUp(MultipartFile pic, SignUpPostReq p){
         String saveFileName= customFileUtils.makeRandomFileName(pic);
-        p.setPic(saveFileName);
         String hashedPw= BCrypt.hashpw(p.getUpw(),BCrypt.gensalt());
         p.setUpw(hashedPw);
-        int result= mapper.postUser(p); //매퍼는 파일명을 데이터 베이스에 저장
+        p.setPic(saveFileName);
 
+        int result= mapper.postUser(p); //매퍼는 파일명을 데이터 베이스에 저장
         if(pic==null){return result;}
         try{
             String path=String.format("user/%d", p.getUserId());
